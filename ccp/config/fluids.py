@@ -1,4 +1,5 @@
 """Module to organize fluids."""
+
 from warnings import warn
 import CoolProp.CoolProp as CP
 
@@ -32,6 +33,7 @@ fluid_list["n-Hexane"].possible_names.extend(["hexane", "n-hexane", "nhexane"])
 fluid_list["Isohexane"].possible_names.extend(["isohexane", "i-hexane", "iso-hexane"])
 fluid_list["n-Heptane"].possible_names.extend(["heptane", "n-heptane"])
 fluid_list["n-Octane"].possible_names.extend(["octane", "n-octane"])
+fluid_list["n-Nonane"].possible_names.extend(["nonane", "n-nonane"])
 fluid_list["n-Undecane"].possible_names.extend(["undecane", "n-undecane"])
 fluid_list["n-Dodecane"].possible_names.extend(["dodecane", "n-dodecane"])
 fluid_list["HydrogenSulfide"].possible_names.extend(["hydrogen sulfide", "h2s"])
@@ -57,9 +59,9 @@ def get_name(name):
         if name.lower() in v.possible_names:
             name = k
 
-    fluid_name = CP.get_REFPROPname(name)
-
-    if fluid_name == "":
+    try:
+        fluid_name = CP.get_REFPROPname(name)
+    except RuntimeError:
         raise ValueError(f"Fluid {name} not available. See ccp.fluid_list. ")
 
     return fluid_name
